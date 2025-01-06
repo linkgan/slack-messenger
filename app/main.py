@@ -10,7 +10,7 @@ app = FastAPI()
 
 @app.get("/")
 async def home():
-    return "Home, use /message/ api to send message to slack"
+    return {"message": "Home, use /message/ api to send message to slack"}
 
 @app.get("/message/") 
 async def get_message(request: Request):
@@ -22,7 +22,8 @@ async def get_message(request: Request):
 def send_text_message(message=''):   
     # Access environment variables
     WEBHOOK_URL = os.getenv("WEBHOOK_URL")
-
+    if WEBHOOK_URL is None:
+        return "Failed to load WEBHOOK_URL env variable."
     # Define the URL and payload
     payload = {"text": "Message: "+message}
 
